@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import java.util.concurrent._
+import com.neoremind.kraps.RpcConf
+import com.neoremind.kraps.rpc.{RpcAddress, RpcEndpointRef, RpcEnv, RpcEnvClientConfig}
+import com.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
 
-import net.neoremind.kraps.RpcConf
-import net.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
-import net.neoremind.kraps.rpc.{RpcAddress, RpcEndpointRef, RpcEnv, RpcEnvClientConfig}
+import java.util.concurrent._
 
 /**
   * Usage:

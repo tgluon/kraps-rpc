@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-import net.neoremind.kraps.RpcConf
-import net.neoremind.kraps.rpc.{RpcAddress, RpcEndpointRef, RpcEnv, RpcEnvClientConfig}
-import net.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
+import com.neoremind.kraps.RpcConf
+import com.neoremind.kraps.rpc.{RpcAddress, RpcEndpointRef, RpcEnv, RpcEnvClientConfig}
+import com.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**

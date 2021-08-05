@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import net.neoremind.kraps.RpcConf
-import net.neoremind.kraps.rpc._
-import net.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
+import com.neoremind.kraps.RpcConf
+import com.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
+import com.neoremind.kraps.rpc.{RpcCallContext, RpcEndpoint, RpcEnv, RpcEnvServerConfig}
 
 /**
   * Usage:
