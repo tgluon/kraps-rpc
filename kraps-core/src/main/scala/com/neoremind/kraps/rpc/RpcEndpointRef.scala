@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc
+package com.neoremind.kraps.rpc
 
-import net.neoremind.kraps.{RpcConf, RpcException}
-import net.neoremind.kraps.util.RpcUtils
+
+
+import com.neoremind.kraps.{RpcConf, RpcException}
+import com.neoremind.kraps.util.RpcUtils
 
 import scala.concurrent.Future
 import scala.reflect.ClassTag

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc
+package com.neoremind.kraps.rpc
 
 /**
   * A callback that [[RpcEndpoint]] can use to send back a message or failure. It's thread-safe

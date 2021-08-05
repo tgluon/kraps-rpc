@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
 
-import net.neoremind.kraps.rpc.{RpcAddress, RpcCallContext}
+
+import com.neoremind.kraps.rpc.{RpcAddress, RpcCallContext}
 
 import scala.concurrent.Promise
 import org.apache.spark.network.client.RpcResponseCallback
@@ -38,8 +39,8 @@ private[netty] abstract class NettyRpcCallContext(override val senderAddress: Rp
 }
 
 /**
-  * If the sender and the receiver are in the same process, the reply can be sent back via `Promise`.
-  */
+ * If the sender and the receiver are in the same process, the reply can be sent back via `Promise`.
+ */
 private[netty] class LocalNettyRpcCallContext(
                                                senderAddress: RpcAddress,
                                                p: Promise[Any])
@@ -51,8 +52,8 @@ private[netty] class LocalNettyRpcCallContext(
 }
 
 /**
-  * A [[net.neoremind.kraps.rpc.RpcCallContext]] that will call [[RpcResponseCallback]] to send the reply back.
-  */
+ * A [[com.neoremind.kraps.rpc.RpcCallContext]] that will call [[RpcResponseCallback]] to send the reply back.
+ */
 private[netty] class RemoteNettyRpcCallContext(
                                                 nettyEnv: NettyRpcEnv,
                                                 callback: RpcResponseCallback,

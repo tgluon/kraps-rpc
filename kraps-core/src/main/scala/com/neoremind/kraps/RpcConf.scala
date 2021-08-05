@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps
+package com.neoremind.kraps
 
 import java.util.concurrent.ConcurrentHashMap
 
-import net.neoremind.kraps.util.Utils
+import com.neoremind.kraps.util.Utils
 
 import scala.collection.JavaConverters._
 

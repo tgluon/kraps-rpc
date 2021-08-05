@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps
+package com.neoremind.kraps
 
-import net.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
-import net.neoremind.kraps.rpc._
+import com.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
+import com.neoremind.kraps.rpc._
+
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration

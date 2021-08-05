@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc
-
-import net.neoremind.kraps.util.Utils
+package com.neoremind.kraps.rpc
 
 
 /**

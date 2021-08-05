@@ -15,7 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
+
+import com.neoremind.kraps.RpcConf
+import com.neoremind.kraps.rpc.{RpcAddress, RpcEndpoint, RpcEndpointAddress, RpcEndpointNotFoundException, RpcEndpointRef, RpcEnv, RpcEnvConfig, RpcEnvFactory, RpcEnvStoppedException, RpcTimeout}
+import com.neoremind.kraps.serializer.{JavaSerializer, JavaSerializerInstance}
+import com.neoremind.kraps.util.{ThreadUtils, Utils}
 
 import java.io._
 import java.net.{InetSocketAddress, URI}
@@ -23,11 +28,6 @@ import java.nio.ByteBuffer
 import java.util.concurrent._
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.annotation.Nullable
-
-import net.neoremind.kraps.RpcConf
-import net.neoremind.kraps.rpc._
-import net.neoremind.kraps.serializer.{JavaSerializer, JavaSerializerInstance}
-import net.neoremind.kraps.util.{ThreadUtils, Utils}
 import org.apache.spark.network.TransportContext
 import org.apache.spark.network.client._
 import org.apache.spark.network.server._
@@ -79,14 +79,14 @@ class NettyRpcEnv(
   private val stopped = new AtomicBoolean(false)
 
   /**
-    * A map for [[RpcAddress]] and [[Outbox]]. When we are connecting to a remote [[RpcAddress]],
-    * we just put messages to its [[Outbox]] to implement a non-blocking `send` method.
-    */
+   * A map for [[RpcAddress]] and [[Outbox]]. When we are connecting to a remote [[RpcAddress]],
+   * we just put messages to its [[Outbox]] to implement a non-blocking `send` method.
+   */
   private val outboxes = new ConcurrentHashMap[RpcAddress, Outbox]()
 
   /**
-    * Remove the address's Outbox and stop it.
-    */
+   * Remove the address's Outbox and stop it.
+   */
   private[netty] def removeOutbox(address: RpcAddress): Unit = {
     val outbox = outboxes.remove(address)
     if (outbox != null) {
@@ -293,21 +293,21 @@ class NettyRpcEnv(
 
 private[netty] object NettyRpcEnv {
   /**
-    * When deserializing the [[NettyRpcEndpointRef]], it needs a reference to [[NettyRpcEnv]].
-    * Use `currentEnv` to wrap the deserialization codes. E.g.,
-    *
-    * {{{
-    *   NettyRpcEnv.currentEnv.withValue(this) {
-    *     your deserialization codes
-    *   }
-    * }}}
-    */
+   * When deserializing the [[NettyRpcEndpointRef]], it needs a reference to [[NettyRpcEnv]].
+   * Use `currentEnv` to wrap the deserialization codes. E.g.,
+   *
+   * {{{
+   *   NettyRpcEnv.currentEnv.withValue(this) {
+   *     your deserialization codes
+   *   }
+   * }}}
+   */
   private[netty] val currentEnv = new DynamicVariable[NettyRpcEnv](null)
 
   /**
-    * Similar to `currentEnv`, this variable references the client instance associated with an
-    * RPC, in case it's needed to find out the remote address during deserialization.
-    */
+   * Similar to `currentEnv`, this variable references the client instance associated with an
+   * RPC, in case it's needed to find out the remote address during deserialization.
+   */
   private[netty] val currentClient = new DynamicVariable[TransportClient](null)
 
 }
@@ -341,25 +341,25 @@ object NettyRpcEnvFactory extends RpcEnvFactory {
 }
 
 /**
-  * The NettyRpcEnv version of RpcEndpointRef.
-  *
-  * This class behaves differently depending on where it's created. On the node that "owns" the
-  * RpcEndpoint, it's a simple wrapper around the RpcEndpointAddress instance.
-  *
-  * On other machines that receive a serialized version of the reference, the behavior changes. The
-  * instance will keep track of the TransportClient that sent the reference, so that messages
-  * to the endpoint are sent over the client connection, instead of needing a new connection to
-  * be opened.
-  *
-  * The RpcAddress of this ref can be null; what that means is that the ref can only be used through
-  * a client connection, since the process hosting the endpoint is not listening for incoming
-  * connections. These refs should not be shared with 3rd parties, since they will not be able to
-  * send messages to the endpoint.
-  *
-  * @param conf            configuration.
-  * @param endpointAddress The address where the endpoint is listening.
-  * @param nettyEnv        The RpcEnv associated with this ref.
-  */
+ * The NettyRpcEnv version of RpcEndpointRef.
+ *
+ * This class behaves differently depending on where it's created. On the node that "owns" the
+ * RpcEndpoint, it's a simple wrapper around the RpcEndpointAddress instance.
+ *
+ * On other machines that receive a serialized version of the reference, the behavior changes. The
+ * instance will keep track of the TransportClient that sent the reference, so that messages
+ * to the endpoint are sent over the client connection, instead of needing a new connection to
+ * be opened.
+ *
+ * The RpcAddress of this ref can be null; what that means is that the ref can only be used through
+ * a client connection, since the process hosting the endpoint is not listening for incoming
+ * connections. These refs should not be shared with 3rd parties, since they will not be able to
+ * send messages to the endpoint.
+ *
+ * @param conf            configuration.
+ * @param endpointAddress The address where the endpoint is listening.
+ * @param nettyEnv        The RpcEnv associated with this ref.
+ */
 private[netty] class NettyRpcEndpointRef(
                                           @transient private val conf: RpcConf,
                                           endpointAddress: RpcEndpointAddress,
@@ -408,28 +408,28 @@ private[netty] class NettyRpcEndpointRef(
 }
 
 /**
-  * The message that is sent from the sender to the receiver.
-  */
+ * The message that is sent from the sender to the receiver.
+ */
 private[netty] case class RequestMessage(
                                           senderAddress: RpcAddress, receiver: NettyRpcEndpointRef, content: Any)
 
 /**
-  * A response that indicates some failure happens in the receiver side.
-  */
+ * A response that indicates some failure happens in the receiver side.
+ */
 private[netty] case class RpcFailure(e: Throwable)
 
 /**
-  * Dispatches incoming RPCs to registered endpoints.
-  *
-  * The handler keeps track of all client instances that communicate with it, so that the RpcEnv
-  * knows which `TransportClient` instance to use when sending RPCs to a client endpoint (i.e.,
-  * one that is not listening for incoming connections, but rather needs to be contacted via the
-  * client socket).
-  *
-  * Events are sent on a per-connection basis, so if a client opens multiple connections to the
-  * RpcEnv, multiple connection / disconnection events will be created for that client (albeit
-  * with different `RpcAddress` information).
-  */
+ * Dispatches incoming RPCs to registered endpoints.
+ *
+ * The handler keeps track of all client instances that communicate with it, so that the RpcEnv
+ * knows which `TransportClient` instance to use when sending RPCs to a client endpoint (i.e.,
+ * one that is not listening for incoming connections, but rather needs to be contacted via the
+ * client socket).
+ *
+ * Events are sent on a per-connection basis, so if a client opens multiple connections to the
+ * RpcEnv, multiple connection / disconnection events will be created for that client (albeit
+ * with different `RpcAddress` information).
+ */
 private[netty] class NettyRpcHandler(
                                       dispatcher: Dispatcher,
                                       nettyEnv: NettyRpcEnv,

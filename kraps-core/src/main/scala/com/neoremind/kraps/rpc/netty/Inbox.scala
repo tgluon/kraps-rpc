@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
+
+import com.neoremind.kraps.RpcException
+import com.neoremind.kraps.rpc.{RpcAddress, RpcEndpoint, ThreadSafeRpcEndpoint}
 
 import javax.annotation.concurrent.GuardedBy
-
-import net.neoremind.kraps.RpcException
-import net.neoremind.kraps.rpc.{RpcAddress, RpcEndpoint, ThreadSafeRpcEndpoint}
-
 import scala.util.control.NonFatal
 import org.slf4j.LoggerFactory
 
@@ -52,8 +51,8 @@ private[netty] case class RemoteProcessConnectionError(cause: Throwable, remoteA
   extends InboxMessage
 
 /**
-  * An inbox that stores messages for an [[net.neoremind.kraps.rpc.RpcEndpoint]] and posts messages to it thread-safely.
-  */
+ * An inbox that stores messages for an [[com.neoremind.kraps.rpc.RpcEndpoint]] and posts messages to it thread-safely.
+ */
 private[netty] class Inbox(
                             val endpointRef: NettyRpcEndpointRef,
                             val endpoint: RpcEndpoint) {
@@ -83,8 +82,8 @@ private[netty] class Inbox(
   }
 
   /**
-    * Process stored messages.
-    */
+   * Process stored messages.
+   */
   def process(dispatcher: Dispatcher): Unit = {
     var message: InboxMessage = null
     inbox.synchronized {
@@ -196,16 +195,16 @@ private[netty] class Inbox(
   }
 
   /**
-    * Called when we are dropping a message. Test cases override this to test message dropping.
-    * Exposed for testing.
-    */
+   * Called when we are dropping a message. Test cases override this to test message dropping.
+   * Exposed for testing.
+   */
   protected def onDrop(message: InboxMessage): Unit = {
     log.warn(s"Drop $message because $endpointRef is stopped")
   }
 
   /**
-    * Calls action closure, and calls the endpoint's onError function in the case of exceptions.
-    */
+   * Calls action closure, and calls the endpoint's onError function in the case of exceptions.
+   */
   private def safelyCall(endpoint: RpcEndpoint)(action: => Unit): Unit = {
     try action catch {
       case NonFatal(e) =>

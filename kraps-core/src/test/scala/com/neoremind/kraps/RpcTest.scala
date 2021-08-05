@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps
+package com.neoremind.kraps
 
 import java.io.{Externalizable, ObjectInput, ObjectOutput}
-
-import net.neoremind.kraps.rpc._
-import net.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
-import net.neoremind.kraps.util.Utils
+import com.neoremind.kraps.rpc._
+import com.neoremind.kraps.rpc.netty.NettyRpcEnvFactory
+import com.neoremind.kraps.util.Utils
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 
@@ -231,7 +230,7 @@ class SimpleRpcTest extends BaseRpcTest {
 
   "EchoEndpoint" should "work on FST serializer" in {
     val _rpcConf = new RpcConf()
-    _rpcConf.set("spark.rpc.serialization.stream.factory", "net.neoremind.kraps.serializer.FstSerializationStreamFactory")
+    _rpcConf.set("spark.rpc.serialization.stream.factory", "com.neoremind.kraps.serializer.FstSerializationStreamFactory")
 
     runServerAndAwaitTermination({
       val echoEndpoint: RpcEndpoint = new EchoEndpoint(serverRpcEnv)

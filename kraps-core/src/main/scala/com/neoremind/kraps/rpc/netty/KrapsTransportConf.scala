@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
 
-import net.neoremind.kraps.RpcConf
+import com.neoremind.kraps.RpcConf
 import org.apache.spark.network.util.{ConfigProvider, TransportConf}
 
 /**
@@ -33,7 +33,7 @@ object KrapsTransportConf {
   private val MAX_DEFAULT_NETTY_THREADS = 8
 
   /**
-    * Utility for creating a [[KrapsTransportConf]] from a [[net.neoremind.kraps.RpcConf]].
+    * Utility for creating a [[KrapsTransportConf]] from a [[com.neoremind.kraps.RpcConf]].
     *
     * @param conf           the [[RpcConf]]
     * @param module         the module name

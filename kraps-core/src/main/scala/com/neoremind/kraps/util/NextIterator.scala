@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.util
+package com.neoremind.kraps.util
 
 /** Provides a basic/boilerplate Iterator implementation. */
 abstract class NextIterator[U] extends Iterator[U] {

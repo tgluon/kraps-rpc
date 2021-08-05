@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.util
+package com.neoremind.kraps.util
 
 import java.util.concurrent._
 
@@ -24,7 +24,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.forkjoin.{ForkJoinPool => SForkJoinPool, ForkJoinWorkerThread => SForkJoinWorkerThread}
 import scala.util.control.NonFatal
 import com.google.common.util.concurrent.{MoreExecutors, ThreadFactoryBuilder}
-import net.neoremind.kraps.RpcException
+import com.neoremind.kraps.RpcException
 
 
 object ThreadUtils {

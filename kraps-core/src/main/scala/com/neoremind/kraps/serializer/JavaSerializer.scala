@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.serializer
+package com.neoremind.kraps.serializer
 
 import java.io._
 import java.nio.ByteBuffer
 
-import net.neoremind.kraps.RpcConf
-import net.neoremind.kraps.util.{ByteBufferInputStream, ByteBufferOutputStream, Utils}
+import com.neoremind.kraps.RpcConf
+import com.neoremind.kraps.util.{ByteBufferInputStream, ByteBufferOutputStream, Utils}
 import org.apache.spark.annotation.DeveloperApi
 import org.nustaq.serialization.FSTConfiguration
 
@@ -236,7 +236,7 @@ class JavaSerializer(conf: RpcConf) extends Serializer with Externalizable {
   override def newInstance(): SerializerInstance = {
     val classLoader = defaultClassLoader.getOrElse(Thread.currentThread.getContextClassLoader)
     val streamFactory: SerializationStreamFactory = classLoader
-      .loadClass(conf.get("spark.rpc.serialization.stream.factory", "net.neoremind.kraps.serializer.JavaSerializationStreamFactory"))
+      .loadClass(conf.get("spark.rpc.serialization.stream.factory", "com.neoremind.kraps.serializer.JavaSerializationStreamFactory"))
       .newInstance().asInstanceOf[SerializationStreamFactory]
     new JavaSerializerInstance(counterReset, extraDebugInfo, classLoader, streamFactory)
   }

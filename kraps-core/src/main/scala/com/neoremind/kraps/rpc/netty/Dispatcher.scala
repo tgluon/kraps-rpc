@@ -15,15 +15,14 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
+
+import com.neoremind.kraps.RpcException
+import com.neoremind.kraps.rpc.{RpcEndpoint, RpcEndpointAddress, RpcEndpointRef, RpcEnvStoppedException}
+import com.neoremind.kraps.util.ThreadUtils
 
 import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap, LinkedBlockingQueue, ThreadPoolExecutor, TimeUnit}
 import javax.annotation.concurrent.GuardedBy
-
-import net.neoremind.kraps.RpcException
-import net.neoremind.kraps.rpc.{RpcEndpoint, RpcEndpointAddress, RpcEndpointRef, RpcEnvStoppedException}
-import net.neoremind.kraps.util.ThreadUtils
-
 import scala.collection.JavaConverters._
 import scala.concurrent.Promise
 import scala.util.control.NonFatal
@@ -31,8 +30,8 @@ import org.apache.spark.network.client.RpcResponseCallback
 import org.slf4j.LoggerFactory
 
 /**
-  * A message dispatcher, responsible for routing RPC messages to the appropriate endpoint(s).
-  */
+ * A message dispatcher, responsible for routing RPC messages to the appropriate endpoint(s).
+ */
 private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
 
   private val log = LoggerFactory.getLogger(classOf[Dispatcher])
@@ -53,9 +52,9 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   private val receivers = new LinkedBlockingQueue[EndpointData]
 
   /**
-    * True if the dispatcher has been stopped. Once stopped, all messages posted will be bounced
-    * immediately.
-    */
+   * True if the dispatcher has been stopped. Once stopped, all messages posted will be bounced
+   * immediately.
+   */
   @GuardedBy("this")
   private var stopped = false
 
@@ -103,10 +102,10 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   }
 
   /**
-    * Send a message to all registered [[RpcEndpoint]]s in this process.
-    *
-    * This can be used to make network events known to all end points (e.g. "a new node connected").
-    */
+   * Send a message to all registered [[RpcEndpoint]]s in this process.
+   *
+   * This can be used to make network events known to all end points (e.g. "a new node connected").
+   */
   def postToAll(message: InboxMessage): Unit = {
     val iter = endpoints.keySet().iterator()
     while (iter.hasNext) {
@@ -138,12 +137,12 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   }
 
   /**
-    * Posts a message to a specific endpoint.
-    *
-    * @param endpointName      name of the endpoint.
-    * @param message           the message to post
-    * @param callbackIfStopped callback function if the endpoint is stopped.
-    */
+   * Posts a message to a specific endpoint.
+   *
+   * @param endpointName      name of the endpoint.
+   * @param message           the message to post
+   * @param callbackIfStopped callback function if the endpoint is stopped.
+   */
   private def postMessage(
                            endpointName: String,
                            message: InboxMessage,
@@ -183,8 +182,8 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   }
 
   /**
-    * Return if the endpoint exists
-    */
+   * Return if the endpoint exists
+   */
   def verify(name: String): Boolean = {
     endpoints.containsKey(name)
   }

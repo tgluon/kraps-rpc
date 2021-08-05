@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.util
+package com.neoremind.kraps.util
 
 import java.io.InputStream
 import java.nio.ByteBuffer

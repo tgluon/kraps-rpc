@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.rpc.netty
+package com.neoremind.kraps.rpc.netty
 
 import java.io.{Externalizable, ObjectInput, ObjectOutput}
+import com.neoremind.kraps.rpc.{RpcCallContext, RpcEndpoint, RpcEnv}
+import com.neoremind.kraps.util.Utils
 
-import net.neoremind.kraps.rpc.{RpcCallContext, RpcEndpoint, RpcEnv}
-import net.neoremind.kraps.util.Utils
 
 /**
   * An [[RpcEndpoint]] for remote [[RpcEnv]]s to query if an `RpcEndpoint` exists.

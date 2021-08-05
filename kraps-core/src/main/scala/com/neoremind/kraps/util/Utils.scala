@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.util
+package com.neoremind.kraps.util
 
 import java.io.IOException
 import java.net.BindException
 
-import net.neoremind.kraps.{RpcConf, RpcException}
+import com.neoremind.kraps.{RpcConf, RpcException}
 import io.netty.channel.unix.Errors.NativeIoException
 import org.apache.spark.network.util.JavaUtils
 import org.slf4j.LoggerFactory

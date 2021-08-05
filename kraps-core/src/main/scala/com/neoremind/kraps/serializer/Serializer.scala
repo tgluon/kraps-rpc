@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package net.neoremind.kraps.serializer
+package com.neoremind.kraps.serializer
 
 import java.io._
 import java.nio.ByteBuffer
 import javax.annotation.concurrent.NotThreadSafe
 
-import net.neoremind.kraps.util.NextIterator
+import com.neoremind.kraps.util.NextIterator
 
 import scala.reflect.ClassTag
 import org.apache.spark.annotation.{DeveloperApi, Private}
@@ -34,7 +34,7 @@ import org.apache.spark.annotation.{DeveloperApi, Private}
   *
   * Implementations of this trait should implement:
   *
-  * 1. a zero-arg constructor or a constructor that accepts a [[net.neoremind.kraps.RpcConf]]
+  * 1. a zero-arg constructor or a constructor that accepts a [[com.neoremind.kraps.RpcConf]]
   * as parameter. If both constructors are defined, the latter takes precedence.
   *
   * 2. Java serialization interface.
