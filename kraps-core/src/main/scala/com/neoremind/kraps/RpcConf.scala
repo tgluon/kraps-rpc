@@ -18,9 +18,9 @@
 package com.neoremind.kraps
 
 import java.util.concurrent.ConcurrentHashMap
-
 import com.neoremind.kraps.util.Utils
 
+import java.util.NoSuchElementException
 import scala.collection.JavaConverters._
 
 case class RpcConf(loadDefaults: Boolean = true) extends Cloneable with Serializable {
@@ -29,9 +29,9 @@ case class RpcConf(loadDefaults: Boolean = true) extends Cloneable with Serializ
   def this() = this(true)
 
   private val settings = new ConcurrentHashMap[String, String]()
-
+   // 加载系统配置
   loadFromSystemProperties(false)
-
+ // 加载spark.*属性
   def loadFromSystemProperties(silent: Boolean): RpcConf = {
     // Load any spark.* system properties
     for ((key, value) <- Utils.getSystemProperties if key.startsWith("spark.")) {

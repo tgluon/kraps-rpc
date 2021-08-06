@@ -17,6 +17,8 @@
 
 package com.neoremind.kraps.rpc
 
+import com.neoremind.kraps.util.Utils
+
 
 /**
   * Address for an RPC environment, with hostname and port.
