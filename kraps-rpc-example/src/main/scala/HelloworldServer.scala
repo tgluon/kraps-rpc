@@ -43,6 +43,7 @@ object HelloworldServer {
 class HelloEndpoint(override val rpcEnv: RpcEnv) extends RpcEndpoint {
 
   override def onStart(): Unit = {
+
     println("start hello endpoint")
   }
 // 接收和响应

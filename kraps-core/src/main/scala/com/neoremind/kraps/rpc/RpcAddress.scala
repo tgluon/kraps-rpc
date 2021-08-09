@@ -24,12 +24,22 @@ import com.neoremind.kraps.util.Utils
   * Address for an RPC environment, with hostname and port.
   */
 case class RpcAddress(host: String, port: Int) {
-
+  /**
+   *  地址加端口
+   * @return
+   */
   def hostPort: String = host + ":" + port
 
-  /** Returns a string in the form of "spark://host:port". */
+  /**
+   * Returns a string in the form of "spark://host:port".
+   * 拼接处spark方式的地址
+   */
   def toSparkURL: String = "spark://" + hostPort
 
+  /**
+   * host加端口
+   * @return
+   */
   override def toString: String = hostPort
 }
 
@@ -42,7 +52,10 @@ object RpcAddress {
     RpcAddress(uriObj.getHost, uriObj.getPort)
   }
 
-  /** Returns the [[RpcAddress]] encoded in the form of "spark://host:port" */
+  /**
+   * Returns the [[RpcAddress]] encoded in the form of "spark://host:port"
+   * 从spark方式的url里面获取host 和port
+   */
   def fromSparkURL(sparkUrl: String): RpcAddress = {
     val (host, port) = Utils.extractHostPortFromKrapsUrl(sparkUrl)
     RpcAddress(host, port)
