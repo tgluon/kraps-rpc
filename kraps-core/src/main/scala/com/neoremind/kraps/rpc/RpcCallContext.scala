@@ -20,6 +20,7 @@ package com.neoremind.kraps.rpc
 /**
  * A callback that [[RpcEndpoint]] can use to send back a message or failure. It's thread-safe
  * and can be called in any thread.
+ * rpc 回调上线文
  */
 trait RpcCallContext {
 
