@@ -33,7 +33,9 @@ object HelloworldServer {
     val config = RpcEnvServerConfig(new RpcConf(), "hello-server", host, 52345)
     val rpcEnv: RpcEnv = NettyRpcEnvFactory.create(config)
     val helloEndpoint: RpcEndpoint = new HelloEndpoint(rpcEnv)
+    // 设置RpcEndpoint
     rpcEnv.setupEndpoint("hello-service", helloEndpoint)
+    // 关闭线程池
     rpcEnv.awaitTermination()
   }
 }
@@ -43,7 +45,7 @@ class HelloEndpoint(override val rpcEnv: RpcEnv) extends RpcEndpoint {
   override def onStart(): Unit = {
     println("start hello endpoint")
   }
-
+// 接收和响应
   override def receiveAndReply(context: RpcCallContext): PartialFunction[Any, Unit] = {
     case SayHi(msg) => {
       //println(s"receive $msg")

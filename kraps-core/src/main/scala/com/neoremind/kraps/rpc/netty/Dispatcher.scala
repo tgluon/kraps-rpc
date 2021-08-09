@@ -49,6 +49,7 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
     new ConcurrentHashMap[RpcEndpoint, RpcEndpointRef]
 
   // Track the receivers whose inboxes may contain messages.
+  // 跟踪收件箱可能包含消息的接收者
   private val receivers = new LinkedBlockingQueue[EndpointData]
 
   /**
@@ -59,17 +60,23 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   private var stopped = false
 
   def registerRpcEndpoint(name: String, endpoint: RpcEndpoint): NettyRpcEndpointRef = {
+    // 地址
     val addr = RpcEndpointAddress(nettyEnv.address, name)
+    // 创建NettyRpcEndpointRef
     val endpointRef = new NettyRpcEndpointRef(nettyEnv.conf, addr, nettyEnv)
     synchronized {
       if (stopped) {
         throw new IllegalStateException("RpcEnv has been stopped")
       }
+      // 将endpoint、endpointRef 放入存入map
       if (endpoints.putIfAbsent(name, new EndpointData(name, endpoint, endpointRef)) != null) {
         throw new IllegalArgumentException(s"There is already an RpcEndpoint called $name")
       }
+      // 根据名称获取data
       val data = endpoints.get(name)
+     // 将endpoint作为key，ref作为value 放入map中
       endpointRefs.put(data.endpoint, data.ref)
+
       receivers.offer(data) // for the OnStart message
     }
     endpointRef
@@ -178,6 +185,7 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
   }
 
   def awaitTermination(): Unit = {
+    // 线程池关闭
     threadpool.awaitTermination(Long.MaxValue, TimeUnit.MILLISECONDS)
   }
 
@@ -190,9 +198,11 @@ private[netty] class Dispatcher(nettyEnv: NettyRpcEnv) {
 
   /** Thread pool used for dispatching messages. */
   private val threadpool: ThreadPoolExecutor = {
+    // 获取dispatcher线程数
     val numThreads = nettyEnv.conf.getInt("spark.rpc.netty.dispatcher.numThreads",
       math.max(2, Runtime.getRuntime.availableProcessors()))
     val pool = ThreadUtils.newDaemonFixedThreadPool(numThreads, "dispatcher-event-loop")
+    //
     for (i <- 0 until numThreads) {
       pool.execute(new MessageLoop)
     }

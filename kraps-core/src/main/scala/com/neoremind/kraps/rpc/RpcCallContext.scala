@@ -18,24 +18,27 @@
 package com.neoremind.kraps.rpc
 
 /**
-  * A callback that [[RpcEndpoint]] can use to send back a message or failure. It's thread-safe
-  * and can be called in any thread.
-  */
+ * A callback that [[RpcEndpoint]] can use to send back a message or failure. It's thread-safe
+ * and can be called in any thread.
+ */
 trait RpcCallContext {
 
   /**
-    * Reply a message to the sender. If the sender is [[RpcEndpoint]], its [[RpcEndpoint.receive]]
-    * will be called.
-    */
+   * Reply a message to the sender. If the sender is [[RpcEndpoint]], its [[RpcEndpoint.receive]]
+   * will be called.
+   * 答复
+   */
   def reply(response: Any): Unit
 
   /**
-    * Report a failure to the sender.
-    */
+   * Report a failure to the sender.
+   * 发送失败
+   */
   def sendFailure(e: Throwable): Unit
 
   /**
-    * The sender of this message.
-    */
+   * The sender of this message.
+   * 发送地址
+   */
   def senderAddress: RpcAddress
 }

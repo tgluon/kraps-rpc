@@ -97,7 +97,9 @@ class NettyRpcEnv(
   def startServer(bindAddress: String, port: Int): Unit = {
     // here disable security
     val bootstraps: java.util.List[TransportServerBootstrap] = java.util.Collections.emptyList()
+    // 创建服务端
     server = transportContext.createServer(bindAddress, port, bootstraps)
+    // 向dispatcher注册RpcEndpoint
     dispatcher.registerRpcEndpoint(
       RpcEndpointVerifier.NAME, new RpcEndpointVerifier(this, dispatcher))
   }
@@ -506,6 +508,7 @@ private[netty] class NettyRpcHandler(
   override def channelInactive(client: TransportClient): Unit = {
     val addr = client.getChannel.remoteAddress().asInstanceOf[InetSocketAddress]
     if (addr != null) {
+      // 地址封装
       val clientAddr = RpcAddress(addr.getHostString, addr.getPort)
       nettyEnv.removeOutbox(clientAddr)
       dispatcher.postToAll(RemoteProcessDisconnected(clientAddr))

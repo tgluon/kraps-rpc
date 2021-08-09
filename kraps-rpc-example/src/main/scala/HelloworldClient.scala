@@ -33,19 +33,28 @@ object HelloworldClient {
     syncCall()
   }
 
+  /**
+   * 异步发送
+   * @return
+   */
   def asyncCall() = {
     val rpcConf = new RpcConf()
     val config = RpcEnvClientConfig(rpcConf, "hello-client")
     val rpcEnv: RpcEnv = NettyRpcEnvFactory.create(config)
     val endPointRef: RpcEndpointRef = rpcEnv.setupEndpointRef(RpcAddress("localhost", 52345), "hello-service")
+    // 请求消息
     val future: Future[String] = endPointRef.ask[String](SayHi("neo"))
     future.onComplete {
       case scala.util.Success(value) => println(s"Got the result = $value")
       case scala.util.Failure(e) => println(s"Got error: $e")
     }
+    // 异步等待结果
     Await.result(future, Duration.apply("30s"))
   }
 
+  /**
+   * 同步执行
+   */
   def syncCall() = {
     val rpcConf = new RpcConf()
     val config = RpcEnvClientConfig(rpcConf, "hello-client")
