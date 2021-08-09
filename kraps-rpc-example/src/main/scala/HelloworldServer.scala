@@ -39,7 +39,7 @@ object HelloworldServer {
     rpcEnv.awaitTermination()
   }
 }
-
+// 定义一个HelloEndpoint继承自RpcEndpoint表明可以并发的调用该服务，如果继承自ThreadSafeRpcEndpoint则表明该Endpoint不允许并发
 class HelloEndpoint(override val rpcEnv: RpcEnv) extends RpcEndpoint {
 
   override def onStart(): Unit = {
