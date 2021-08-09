@@ -34,7 +34,7 @@ import scala.concurrent.Future
   * [[RpcEnv]] also provides some methods to retrieve [[RpcEndpointRef]]s given name or uri.
   */
 abstract class RpcEnv(conf: RpcConf) {
-
+  // 默认rpc 超时时间
   val defaultLookupTimeout = RpcUtils.lookupRpcTimeout(conf)
 
   /**
