@@ -319,10 +319,11 @@ object NettyRpcEnvFactory extends RpcEnvFactory {
 
     // Use JavaSerializerInstance in multiple threads is safe. However, if we plan to support
     // KryoSerializer in future, we have to use ThreadLocal to store SerializerInstance
-    val javaSerializerInstance =
-    new JavaSerializer(conf).newInstance().asInstanceOf[JavaSerializerInstance]
-    val nettyEnv =
-      new NettyRpcEnv(conf, javaSerializerInstance, config.bindAddress)
+    // java 序列化实例
+    val javaSerializerInstance = new JavaSerializer(conf).newInstance().asInstanceOf[JavaSerializerInstance]
+   // 实例化nettyRpcEnv
+    val nettyEnv = new NettyRpcEnv(conf, javaSerializerInstance, config.bindAddress)
+   // 启动nettyEnv
     if (!config.clientMode) {
       val startNettyRpcEnv: Int => (NettyRpcEnv, Int) = { actualPort =>
         nettyEnv.startServer(config.bindAddress, actualPort)
